@@ -15,13 +15,15 @@ const Display = ({ items }:any) => {
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>title</TableCell>
+            <TableCell>id</TableCell>
+            <TableCell align="right">title</TableCell>
             <TableCell align="right">cost</TableCell>
             <TableCell align="right">date</TableCell>
             <TableCell align="right">Categories</TableCell>
             <TableCell align="right">P1 Cost</TableCell>
             <TableCell align="right">P2 Cost</TableCell>
             <TableCell align="right">notes</TableCell>
+            <TableCell align="right">amazon order #</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -32,16 +34,18 @@ const Display = ({ items }:any) => {
           const mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(d);
           const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
           return (
-            <TableRow key={item.title}>
+            <TableRow key={i}>
               <TableCell component="th" scope="row">
-                {item.title}
+                {i}
               </TableCell>
+              <TableCell align="right">{ item.title}</TableCell>
               <TableCell align="right">{ item.cost}</TableCell>
               <TableCell align="right">{`${mo}-${da}-${ye}`}</TableCell>
               <TableCell align="right">{item.category}</TableCell>
               <TableCell align="right">{item.p1Cost}</TableCell>
               <TableCell align="right">{item.p2Cost}</TableCell>
               <TableCell align="right">{item.notes}</TableCell>
+              <TableCell align="right">{item.amazonOrderID ? item.amazonOrderID: ''}</TableCell>
             </TableRow>
           )})}
         </TableBody>

@@ -13,6 +13,8 @@ import FormControl from '@material-ui/core/FormControl';
 import MuiSelect from '@material-ui/core/Select';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import MuiAutoComplete  from '@material-ui/lab/Autocomplete';
+
 const getText = (evt:any) => evt.target.value
 const Input = (props:any) => {
   if (props.type == "date") {
@@ -20,7 +22,7 @@ const Input = (props:any) => {
   }else if (props.type == "select") {
     return <Select {...props}/>
   }else if (props.type == "text-select") {
-    return <TextAndSelect {...props}/>
+    return <AutoComplete {...props}/>
   }
   return  <TextInput {...props}/>
 }
@@ -33,6 +35,7 @@ const TextInput = ({label, onChange, value}:any) => {
       variant="outlined"
       value={value}
       onChange={(evt:any)=>onChange && onChange(getText(evt))}
+      autoComplete="off" 
     />
 
   )
@@ -47,24 +50,39 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const  TextAndSelect = ({label, onChange, value, values}:any) => {
-  const classes = useStyles();
+const  AutoComplete = ({label, onChange, value, values}:any) => {
+  const classes = useStyles(); 
+  const [textBoxValue, setTextBoxValue] = React.useState(values[0] || null)
+  const [textInputValue, setTextInputValue] = React.useState(value)
+  React.useEffect(() => {
+    setTextBoxValue(values[0] || null)
+    setTextInputValue(value)
+  }, [value])
   return (
-    <TextField 
-      className={classes.formControl}
-      id="standard-basic"
-      select
-      label={label}
-      variant="outlined"
-      value={value}
-      onChange={(evt:any)=>onChange && onChange(getText(evt))}
-    >
-      {values.map((option:any) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </TextField>
+    
+    <MuiAutoComplete  
+     freeSolo
+
+      value={textBoxValue}
+      onChange={(evt:any, newValue:string)=>{
+        setTextBoxValue(newValue)
+        onChange && onChange(newValue)
+      }}
+      inputValue={textInputValue}
+      onInputChange={(event:any, newInputValue:any) => {
+        setTextInputValue(newInputValue)
+       onChange && onChange(newInputValue)
+      }}
+      id={label}
+      options={values}
+      style={{ width: 300 }}
+      renderInput={(params:any) =>{ 
+        const inputProps = params.inputProps;
+        //disable google suggestions
+        inputProps.autoComplete = "off"
+        return <TextField autoComplete="off" {...params} inputProps={inputProps} label={label} variant="outlined" />
+      }}
+    />
   )
 }
 const  Select = ({label, onChange, value, values}:any) => {

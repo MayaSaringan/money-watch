@@ -1,6 +1,7 @@
 import 'date-fns';
 import React, {useState} from 'react';
 import TextInput from './TextInput'
+import Switch from './Switch'
 import Card from '@material-ui/core/Card';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -21,7 +22,7 @@ const mapStateToProps = (state :any)=> ({
   ...state
 });
  
-const ItemInput = ({items, onSubmit }:any ) => {
+const ItemInput = ({items, amazonOrders, onSubmit }:any ) => {
   const classes = useStyles();
   const [title, setTitle] = useState("")
   const [cost, setCost] = useState("")
@@ -29,6 +30,8 @@ const ItemInput = ({items, onSubmit }:any ) => {
   const [category, setCategory] =useState("")
   const [splitRule, setSplitRule] = useState("")
   const [notes, setNotes] = useState("")
+  const [isAmazonOrder, setIsAmazonOrder] = useState(false)
+  const [amazonOrderID, setAmazonOrderID] = useState("")
   console.log([title, cost, date, category, splitRule, notes])
   let titleList:any = []
   Object.keys(items).forEach(key => {
@@ -37,6 +40,7 @@ const ItemInput = ({items, onSubmit }:any ) => {
       titleList.push(item.title)
     }
   }) 
+  console.log(amazonOrders)
   return (
     <Card style={{padding:30}}>
       <div style={{flexDirection:'column', display:'flex'}}>
@@ -46,7 +50,7 @@ const ItemInput = ({items, onSubmit }:any ) => {
           value={title}
           onChange={setTitle}
           label={"title"}
-          values={titleList.map((title:any)=>{ return {value:title, label:title}})}
+          values={titleList}
         />
         <TextInput
           value={cost}
@@ -65,7 +69,8 @@ const ItemInput = ({items, onSubmit }:any ) => {
           type="select"
           values={[
              "Groceries",
-             "Recreation"
+             "Recreation",
+             "Miscellaneous"
           ]}
           value={category}
           onChange={setCategory}
@@ -88,13 +93,28 @@ const ItemInput = ({items, onSubmit }:any ) => {
           label={"notes"}
         />
         </div>
+        <div style={{flexDirection:'row', display:'flex'}}>
+        <Switch
+          value={isAmazonOrder}
+          onChange={setIsAmazonOrder}
+        />
+        {isAmazonOrder && 
+          <TextInput
+            type="text-select"
+            value={amazonOrderID}
+            onChange={setAmazonOrderID}
+            label={"Amazon Order #"}
+            values={Object.keys(amazonOrders)}
+          />
+        }
+        </div>
         <div>
         <Button
           variant="contained"
           color="primary"
           onClick={()=>{
             onSubmit && onSubmit({
-              title, cost, date, category, splitRule, notes
+              title, cost, date, category, splitRule, notes, amazonOrderID
             }).then(() => {
               setTitle("")
               setCost("")
@@ -102,6 +122,7 @@ const ItemInput = ({items, onSubmit }:any ) => {
               setCategory("")
               setSplitRule("")
               setNotes("")
+              setAmazonOrderID("")
             })
           }}
         >

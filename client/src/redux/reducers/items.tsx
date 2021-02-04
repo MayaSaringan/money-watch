@@ -1,6 +1,7 @@
 const initialState: any = {
   items: {},
-  summaries: {}
+  summaries: {},
+  amazonOrders:{}
 }
 export default function( state = initialState, action: any){
  console.log(action.payload)
@@ -15,6 +16,10 @@ export default function( state = initialState, action: any){
         summaries: {
           ...state.summaries,
           ...action.payload.summaries
+        },
+        amazonOrders: {
+          ...state.amazonOrders,
+          ...action.payload.amazonOrders
         }
       }
     }

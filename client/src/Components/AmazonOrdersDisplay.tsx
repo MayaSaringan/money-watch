@@ -6,40 +6,43 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField'; 
-const Display = ({ items }:any) => { 
+const Display = ({ amazonOrders, items }:any) => { 
   
   return ( 
       <TableContainer component={Paper}>
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>order</TableCell>
+            <TableCell  rowSpan={2}>order</TableCell>
+            <TableCell  colSpan={2}  align="right">items</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell align="right">ID</TableCell>
             <TableCell align="right">cost</TableCell>
-            <TableCell align="right">date</TableCell>
-            <TableCell align="right">status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          { Object.keys( items).map((i) =>{
-          let item = items[i]
-          const d = item.date
-          const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
-          const mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(d);
-          const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
+          { Object.keys( amazonOrders).map((i:any ) =>{
+          let order = amazonOrders[i]
+          let totalOrderCost = 0
           return (
-            <TableRow key={item.title}>
-              <TableCell component="th" scope="row">
-                {item.title}
-              </TableCell>
-              <TableCell align="right">{ item.cost}</TableCell>
-              <TableCell align="right">{`${mo}-${da}-${ye}`}</TableCell>
-              <TableCell align="right">{item.category}</TableCell>
-              <TableCell align="right">{item.p1Cost}</TableCell>
-              <TableCell align="right">{item.p2Cost}</TableCell>
-              <TableCell align="right">{item.notes}</TableCell>
-            </TableRow>
+            <>
+            {   amazonOrders[i].map((itemKey:any, idx: any) =>{
+              let item = items[itemKey]
+              totalOrderCost+=parseFloat(item.cost)
+              return (
+                <TableRow key={order.title}>
+                {idx == 0 && (<TableCell component="th" scope="row" rowSpan={amazonOrders[i].length}>{i}</TableCell>)}
+                  <TableCell align="right">{ itemKey}</TableCell>
+                  <TableCell align="right">{item.cost}</TableCell>
+                </TableRow>
+              )})}
+              <TableRow key={order.title}>
+                <TableCell align="right" colSpan={2}>Total Cost:</TableCell>
+                <TableCell align="right">{totalOrderCost}</TableCell>
+              </TableRow>
+            </>
+            
           )})}
         </TableBody>
       </Table>
