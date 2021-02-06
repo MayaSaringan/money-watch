@@ -1,5 +1,3 @@
-import {Dispatch} from 'redux'; 
-import {Category} from '../Services/Service'
  
 export const updateItems = (items : any, summaries: any, amazonOrders : any = {}) =>  {
  
@@ -8,7 +6,6 @@ export const updateItems = (items : any, summaries: any, amazonOrders : any = {}
     summaries:summaries,
     amazonOrders:amazonOrders
   }
-  console.log(payload)
   return {
     type: 'UPDATE_ITEMS',
     payload: payload ,

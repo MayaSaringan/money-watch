@@ -52,10 +52,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const  AutoComplete = ({label, onChange, value, values}:any) => {
   const classes = useStyles(); 
-  const [textBoxValue, setTextBoxValue] = React.useState(values[0] || null)
+  const [textBoxValue, setTextBoxValue] = React.useState( null)
   const [textInputValue, setTextInputValue] = React.useState(value)
   React.useEffect(() => {
-    setTextBoxValue(values[0] || null)
+    setTextBoxValue(value)
     setTextInputValue(value)
   }, [value])
   return (
@@ -64,9 +64,11 @@ const  AutoComplete = ({label, onChange, value, values}:any) => {
      freeSolo
 
       value={textBoxValue}
-      onChange={(evt:any, newValue:string)=>{
-        setTextBoxValue(newValue)
-        onChange && onChange(newValue)
+      onChange={(evt:any, newValue: any)=>{
+        if (newValue){
+          setTextBoxValue(newValue)
+          onChange && onChange(newValue)
+        }
       }}
       inputValue={textInputValue}
       onInputChange={(event:any, newInputValue:any) => {

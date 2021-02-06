@@ -70,6 +70,59 @@ app.post("/items/add/", async (req, res) => {
   })
 })
 
+app.post("/items/edit/", async (req, res) => {
+  //  let reqParsed = JSON.parse(req.body)
+    const itemsRef = db.collection('items').doc(req.body.key)
+
+    itemsRef.get().then( async doc => {
+      if ( doc.exists) {
+        console.log('Document  exist !');
+        // good to go
+        await db.collection('items').doc(req.body.key).set({...req.body.value});
+
+        const itemsRef2 = db.collection('items');
+
+        itemsRef2.get().then(coll => {
+          const response:any = {}
+          coll.forEach(item => response[item.id] = item.data())
+          res.send(JSON.stringify(response))
+        }).catch(err => {
+          console.log("CAUGHT")
+          console.log(err)
+        })
+      } else {
+        console.log('Document does not exists');
+      }
+    })
+  })
+
+app.post("/items/delete/", async (req, res) => {
+  //  let reqParsed = JSON.parse(req.body)
+    const itemsRef = db.collection('items').doc(req.body.key)
+
+    itemsRef.get().then( async doc => {
+      if ( doc.exists) {
+        console.log('Document  exist. item may be deleted.!');
+        // good to go
+        await db.collection('items').doc(req.body.key).delete();
+
+        const itemsRef2 = db.collection('items');
+
+        itemsRef2.get().then(coll => {
+          const response:any = {}
+          coll.forEach(item => response[item.id] = item.data())
+          res.send(JSON.stringify(response))
+        }).catch(err => {
+          console.log("CAUGHT")
+          console.log(err)
+        })
+      } else {
+        console.log('Document does not exists');
+      }
+    })
+  })
+
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })

@@ -33,7 +33,7 @@ const Display = ({ amazonOrders, items }:any) => {
               return (
                 <TableRow key={order.title}>
                 {idx == 0 && (<TableCell component="th" scope="row" rowSpan={amazonOrders[i].length}>{i}</TableCell>)}
-                  <TableCell align="right">{ itemKey}</TableCell>
+                  <TableCell align="right">{ item.title}</TableCell>
                   <TableCell align="right">{item.cost}</TableCell>
                 </TableRow>
               )})}

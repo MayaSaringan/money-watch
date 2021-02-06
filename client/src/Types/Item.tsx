@@ -1,4 +1,4 @@
-export class Item {
+export default class Item {
   cost;
   date;
   title;
@@ -7,7 +7,7 @@ export class Item {
   p1Cost;
   p2Cost;
   amazonOrderID;
-  constructor(cost: number, date: Date, title: string, notes:string, category: string, p1Cost: number, p2Cost: number, amazonOrderID: string = ""){
+  constructor(cost: number, date: Date, title: string, notes:string | null, category: string | null, p1Cost: number | null, p2Cost: number | null, amazonOrderID: string = ""){
     this.cost = cost;
     this.date = date;
     this.title = title;

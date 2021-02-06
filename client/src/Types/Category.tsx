@@ -1,4 +1,4 @@
-export class Category {
+export default class Category {
   cost;
   p1Cost;
   p2Cost;
